@@ -23,6 +23,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget>
     with SingleTickerProviderStateMixin {
   late TextEditingController _searchController;
   FocusNode _focusNode = FocusNode();
+  late AnimationController _animationController;
 
   @override
   void initState() {

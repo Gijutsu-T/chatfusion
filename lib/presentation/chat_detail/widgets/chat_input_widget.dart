@@ -95,8 +95,8 @@ class _ChatInputWidgetState extends State<ChatInputWidget> {
     try {
       await _recorder.stop(); // Stopping also discards
       setState(() => _isRecording = false);
-    } catch (error) { // TODO: Handle error during cancellation
-      );
+    } catch (error) {
+ ;
     }
   }
 
@@ -237,8 +237,8 @@ class _ChatInputWidgetState extends State<ChatInputWidget> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
+ @override
+ Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(3.w),
       decoration: BoxDecoration(
@@ -261,40 +261,46 @@ class _ChatInputWidgetState extends State<ChatInputWidget> {
             ),
           ),
 
-          // Text input
+          // Input area
           Expanded(
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 3.w),
-              decoration: BoxDecoration(
-                color: AppTheme.lightTheme.colorScheme.surfaceContainerHighest,
-                borderRadius: BorderRadius.circular(6.w),
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: widget.controller,
-                      decoration: InputDecoration(
-                        hintText: 'Type a message...',
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(vertical: 3.w),
-                      ),
-                      maxLines: 4,
-                      minLines: 1,
-                    ),
-                  ),
-
-                  // Emoji button
-                  IconButton(
-                    onPressed: () {
-                      // TODO: Implement emoji picker
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Emoji picker coming soon')),
-                      );
+            child: _isRecording
+                ? GestureDetector(
+                    onHorizontalDragStart: (details) => _cancelRecording(),
+                    onHorizontalDragUpdate: (details) {
+                      // You could add visual feedback here for the swipe distance
                     },
-                    icon: Icon(
-                      Icons.emoji_emotions_outlined,
-                      color: AppTheme.lightTheme.colorScheme.onSurfaceVariant,
+                    onHorizontalDragEnd: (details) => _cancelRecording(),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 4.w),
+                      decoration: BoxDecoration(
+                        color: Colors.redAccent,
+                        borderRadius: BorderRadius.circular(6.w),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Icon(
+                            Icons.delete,
+                            color: Colors.white,
+                            size: 5.w,
+                          ),
+                          Text(
+                            'Slide to cancel',
+                            style: AppTheme
+                                .lightTheme.textTheme.bodyMedium
+                                ?.copyWith(
+                              color: Colors.white,
+                              fontSize: 12.sp,
+                            ),
+                          ),
+                          // Placeholder for recording timer/waveform
+                          Icon(
+                            Icons.mic,
+                            color: Colors.white,
+                            size: 5.w,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],

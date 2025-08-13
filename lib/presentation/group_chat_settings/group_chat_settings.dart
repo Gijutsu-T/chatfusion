@@ -110,6 +110,10 @@ class _GroupChatSettingsState extends State<GroupChatSettings> {
     _initializeCamera();
   }
 
+  void _initializeCamera() {
+    // Placeholder for camera initialization logic
+  }
+
   @override
   void dispose() {
     _cameraController?.dispose();
@@ -699,7 +703,7 @@ class _GroupChatSettingsState extends State<GroupChatSettings> {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      onWillPop: _onWillPop,
+      onPopInvoked: (didPop) async => didPop ? true : await _onWillPop(),
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Group Settings'),

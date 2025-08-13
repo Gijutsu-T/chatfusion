@@ -152,7 +152,7 @@ class _VoiceVideoCallState extends State<VoiceVideoCall>
     if (kIsWeb) {
       return;
     }
-    final status = await Permission.microphone.request();
+    await Permission.microphone.request();
   }
 
   Future<void> _applySettings() async {
