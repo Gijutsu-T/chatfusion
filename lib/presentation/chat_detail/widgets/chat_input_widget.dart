@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:record/record.dart';
 import 'package:sizer/sizer.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../../../core/app_export.dart';
 import '../../../theme/app_theme.dart';
@@ -56,8 +57,11 @@ class _ChatInputWidgetState extends State<ChatInputWidget> {
     if (!hasPermission) return;
 
     try {
-      setState(() => _isRecording = true);
+      // Use a temporary file path for the recording
+      final tempDir = await getTemporaryDirectory();
+      final filePath = '${tempDir.path}/temp_recording.m4a';
 
+      setState(() => _isRecording = true);
       await _recorder.start(const RecordConfig(), path: 'temp_recording.m4a');
       // Recording started successfully
     } catch (error) {
@@ -72,17 +76,26 @@ class _ChatInputWidgetState extends State<ChatInputWidget> {
     try {
       final path = await _recorder.stop();
       setState(() => _isRecording = false);
-
       if (path != null) {
         // TODO: Upload voice message and send
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Voice message functionality coming soon')),
         );
       }
+
     } catch (error) {
       setState(() => _isRecording = false);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Failed to stop recording')),
+      );
+    }
+  }
+
+  Future<void> _cancelRecording() async {
+    try {
+      await _recorder.stop(); // Stopping also discards
+      setState(() => _isRecording = false);
+    } catch (error) { // TODO: Handle error during cancellation
       );
     }
   }
@@ -291,32 +304,72 @@ class _ChatInputWidgetState extends State<ChatInputWidget> {
 
           SizedBox(width: 2.w),
 
-          // Send/Voice button
-          GestureDetector(
-            onTap: _isTyping
-                ? () => widget.onSendMessage(widget.controller.text)
-                : null,
-            onLongPressStart: !_isTyping ? (_) => _startRecording() : null,
-            onLongPressEnd: !_isTyping ? (_) => _stopRecording() : null,
-            child: Container(
-              padding: EdgeInsets.all(3.w),
-              decoration: BoxDecoration(
-                color: _isRecording
-                    ? Colors.red
-                    : AppTheme.lightTheme.colorScheme.primary,
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                _isTyping
-                    ? Icons.send
-                    : _isRecording
-                        ? Icons.stop
-                        : Icons.mic,
-                color: Colors.white,
-                size: 5.w,
-              ),
-            ),
-          ),
+          // Send/Voice button and recording UI
+          _isRecording
+              ? Expanded(
+                  child: GestureDetector(
+                    onHorizontalDragStart: (details) => _cancelRecording(),
+                    onHorizontalDragUpdate: (details) {
+                      // You could add visual feedback here for the swipe
+                    },
+                    onHorizontalDragEnd: (details) => _cancelRecording(),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 4.w),
+                      decoration: BoxDecoration(
+                        color: Colors.redAccent,
+                        borderRadius: BorderRadius.circular(6.w),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Icon(
+                            Icons.delete,
+                            color: Colors.white,
+                            size: 5.w,
+                          ),
+                          Text(
+                            'Slide to cancel',
+                            style: AppTheme
+                                .lightTheme.textTheme.bodyMedium
+                                ?.copyWith(
+                              color: Colors.white,
+                              fontSize: 12.sp,
+                            ),
+                          ),
+                          // Placeholder for recording timer/waveform
+                          Icon(
+                            Icons.mic,
+                            color: Colors.white,
+                            size: 5.w,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+              : GestureDetector(
+                  onTap: _isTyping
+                      ? () {
+                          widget.onSendMessage(widget.controller.text);
+                          widget.controller.clear();
+                        }
+                      : null,
+                  onLongPressStart:
+                      !_isTyping ? (_) => _startRecording() : null,
+                  onLongPressEnd: !_isTyping ? (_) => _stopRecording() : null,
+                  child: Container(
+                    padding: EdgeInsets.all(3.w),
+                    decoration: BoxDecoration(
+                      color: AppTheme.lightTheme.colorScheme.primary,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      _isTyping ? Icons.send : Icons.mic,
+                      color: Colors.white,
+                      size: 5.w,
+                    ),
+                  ),
+                ),
         ],
       ),
     );
