@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter/material.dart'; // Explicitly importing for WidgetStateProperty
-
+import 'package:flutter/material.dart' show TabBarThemeData, CardThemeData, WidgetStateProperty;
 /// A class that contains all theme configurations for the application.
 /// Implements Contemporary Professional Minimalism design system with
 /// Adaptive Professional Spectrum color palette for messaging applications.
@@ -143,7 +142,7 @@ class AppTheme {
     ),
 
     // Tab Bar Theme
-    tabBarTheme: TabBarTheme(
+    tabBarTheme: TabBarThemeData(
       labelColor: primaryLight,
       unselectedLabelColor: textSecondaryLight,
       indicatorColor: primaryLight,
@@ -162,7 +161,7 @@ class AppTheme {
     ),
 
     // Card Theme - Subtle elevation for content hierarchy
-    cardTheme: CardTheme(
+    cardTheme: CardThemeData(
       color: backgroundLight,
       elevation: 2,
       shadowColor: shadowLight,
@@ -397,7 +396,7 @@ class AppTheme {
     ),
 
     // Tab Bar Theme
-    tabBarTheme: TabBarTheme(
+    tabBarTheme: TabBarThemeData(
       labelColor: primaryDark,
       unselectedLabelColor: textSecondaryDark,
       indicatorColor: primaryDark,
@@ -416,7 +415,7 @@ class AppTheme {
     ),
 
     // Card Theme - Subtle elevation for content hierarchy
-    cardTheme: CardTheme(
+    cardTheme: CardThemeData(
       color: surfaceDark,
       elevation: 2,
       shadowColor: shadowDark,
