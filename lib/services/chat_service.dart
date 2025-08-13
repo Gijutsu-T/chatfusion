@@ -105,7 +105,7 @@ class ChatService {
       await _client.from('chat_members').insert({
         'chat_id': chat.id,
         'user_id': userId,
-        'is_admin': true,
+        'role': 'admin',
       });
 
       // Add other members
@@ -134,12 +134,15 @@ class ChatService {
           .from('messages')
           .select('''
             *,
+ storage_path,
+ bucket_id,
             sender:user_profiles!sender_id(*),
             parent_message:messages!parent_message_id(
               *,
+ storage_path,
+ bucket_id,
               sender:user_profiles!sender_id(*)
-            )
-          ''')
+ )''')
           .eq('chat_id', chatId)
           .eq('is_deleted', false)
           .order('created_at', ascending: false)
@@ -156,12 +159,11 @@ class ChatService {
     required String chatId,
     required String content,
     String messageType = 'text',
-    String? fileUrl,
     String? fileName,
     int? fileSize,
     String? fileType,
     String? parentMessageId,
-    Map<String, dynamic>? metadata,
+    Map<String, dynamic>? metadata, required fileUrl,
   }) async {
     try {
       final userId = _client.auth.currentUser?.id;
@@ -172,11 +174,12 @@ class ChatService {
         'sender_id': userId,
         'content': content,
         'message_type': messageType,
-        'file_url': fileUrl,
+        'storage_path': metadata?['storage_path'],
+        'bucket_id': metadata?['bucket_id'],
         'file_name': fileName,
         'file_size': fileSize,
         'file_type': fileType,
-        'parent_message_id': parentMessageId,
+        'parent_message_id': parentMessageId, // Keep this line
         'metadata': metadata,
       }).select('''
             *,

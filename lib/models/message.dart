@@ -11,6 +11,8 @@ class Message {
   final String? fileName;
   final int? fileSize;
   final String? fileType;
+  final String? storagePath; // Added storagePath field
+  final String? bucketId; // Added bucketId field
   final String? thumbnailUrl;
   final Map<String, dynamic> metadata;
   final bool isEdited;
@@ -37,6 +39,8 @@ class Message {
     this.fileName,
     this.fileSize,
     this.fileType,
+    this.storagePath, // Added storagePath to constructor
+    this.bucketId, // Added bucketId to constructor
     this.thumbnailUrl,
     this.metadata = const {},
     this.isEdited = false,
@@ -63,6 +67,8 @@ class Message {
       fileName: json['file_name'],
       fileSize: json['file_size'],
       fileType: json['file_type'],
+      storagePath: json['storage_path'], // Parse storage_path
+      bucketId: json['bucket_id'], // Parse bucket_id
       thumbnailUrl: json['thumbnail_url'],
       metadata: json['metadata'] ?? {},
       isEdited: json['is_edited'] ?? false,
@@ -95,6 +101,8 @@ class Message {
       'file_name': fileName,
       'file_size': fileSize,
       'file_type': fileType,
+      'storage_path': storagePath, // Include storage_path in toJson
+      'bucket_id': bucketId, // Include bucket_id in toJson
       'thumbnail_url': thumbnailUrl,
       'metadata': metadata,
       'is_edited': isEdited,

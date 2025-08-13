@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/material.dart'; // Explicitly importing for WidgetStateProperty
 
 /// A class that contains all theme configurations for the application.
 /// Implements Contemporary Professional Minimalism design system with

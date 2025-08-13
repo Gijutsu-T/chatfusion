@@ -58,6 +58,8 @@ class StorageService {
 
       return {
         'file_url': publicUrl,
+        'bucket_id': 'chat-files',
+ 'bucket_id': 'chat-files',
         'file_name': fileName,
         'file_size': fileStats.size,
         'file_type': _getFileType(fileExtension),
@@ -90,6 +92,7 @@ class StorageService {
 
       return {
         'file_url': publicUrl,
+        'bucket_id': 'voice-messages',
         'file_name': 'Voice Message',
         'file_size': fileStats.size,
         'file_type': 'voice',

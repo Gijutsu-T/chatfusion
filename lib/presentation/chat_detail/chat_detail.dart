@@ -164,7 +164,7 @@ class _ChatDetailState extends State<ChatDetail> {
     try {
       await ChatService.instance.sendMessage(
         chatId: _chatId!,
-        content: content.trim(),
+        content: content.trim(), fileUrl: null,
       );
 
       _messageController.clear();
