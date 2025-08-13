@@ -58,7 +58,6 @@ class StorageService {
 
       return {
         'file_url': publicUrl,
-        'bucket_id': 'chat-files',
  'bucket_id': 'chat-files',
         'file_name': fileName,
         'file_size': fileStats.size,

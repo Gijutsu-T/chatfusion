@@ -62,7 +62,6 @@ class _VoiceVideoCallState extends State<VoiceVideoCall>
 
   // Audio recording variables
   final AudioRecorder _audioRecorder = AudioRecorder();
-  bool _isRecordingPermissionGranted = false;
 
   // Animation controllers
   late AnimationController _pulseController;
@@ -151,14 +150,9 @@ class _VoiceVideoCallState extends State<VoiceVideoCall>
 
   Future<void> _requestMicrophonePermission() async {
     if (kIsWeb) {
-      _isRecordingPermissionGranted = true;
       return;
     }
-
     final status = await Permission.microphone.request();
-    setState(() {
-      _isRecordingPermissionGranted = status.isGranted;
-    });
   }
 
   Future<void> _applySettings() async {

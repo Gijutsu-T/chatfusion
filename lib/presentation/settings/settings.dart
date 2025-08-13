@@ -24,10 +24,7 @@ class _SettingsState extends State<Settings> {
   bool _notificationsEnabled = true;
   bool _soundEnabled = true;
   bool _vibrationEnabled = true;
-  bool _darkModeEnabled = false;
   bool _readReceiptsEnabled = true;
-  bool _lastSeenEnabled = true;
-  bool _profilePhotoEnabled = true;
   bool _autoDownloadPhotos = true;
   bool _autoDownloadVideos = false;
   bool _autoDownloadDocuments = false;

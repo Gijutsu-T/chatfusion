@@ -26,7 +26,6 @@ class MemberListWidget extends StatefulWidget {
 }
 
 class _MemberListWidgetState extends State<MemberListWidget> {
-  String _searchQuery = '';
   List<Map<String, dynamic>> _filteredMembers = [];
 
   @override
@@ -37,7 +36,6 @@ class _MemberListWidgetState extends State<MemberListWidget> {
 
   void _filterMembers(String query) {
     setState(() {
-      _searchQuery = query;
       if (query.isEmpty) {
         _filteredMembers = widget.members;
       } else {

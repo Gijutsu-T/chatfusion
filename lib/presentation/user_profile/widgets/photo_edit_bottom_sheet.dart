@@ -23,7 +23,6 @@ class _PhotoEditBottomSheetState extends State<PhotoEditBottomSheet> {
   CameraController? _cameraController;
   List<CameraDescription> _cameras = [];
   bool _isCameraInitialized = false;
-  XFile? _capturedImage;
   final ImagePicker _imagePicker = ImagePicker();
 
   @override
@@ -93,10 +92,7 @@ class _PhotoEditBottomSheetState extends State<PhotoEditBottomSheet> {
       return;
 
     try {
-      final XFile photo = await _cameraController!.takePicture();
-      setState(() {
-        _capturedImage = photo;
-      });
+      final XFile photo = await _cameraController!.takePicture();      
       widget.onPhotoSelected(photo.path);
       Navigator.pop(context);
     } catch (e) {

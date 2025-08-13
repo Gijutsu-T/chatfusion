@@ -20,7 +20,6 @@ class GroupChatSettings extends StatefulWidget {
 
 class _GroupChatSettingsState extends State<GroupChatSettings> {
   final ImagePicker _imagePicker = ImagePicker();
-  List<CameraDescription>? _cameras;
   CameraController? _cameraController;
   bool _hasUnsavedChanges = false;
 
@@ -192,14 +191,6 @@ class _GroupChatSettingsState extends State<GroupChatSettings> {
           "isDestructive": true,
         },
     ];
-  }
-
-  Future<void> _initializeCamera() async {
-    try {
-      _cameras = await availableCameras();
-    } catch (e) {
-      debugPrint('Error initializing camera: $e');
-    }
   }
 
   Future<bool> _requestCameraPermission() async {
@@ -707,7 +698,7 @@ class _GroupChatSettingsState extends State<GroupChatSettings> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
+    return PopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
         appBar: AppBar(
